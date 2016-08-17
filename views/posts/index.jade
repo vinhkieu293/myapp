@@ -1,0 +1,17 @@
+extends layout
+
+block content
+	table.table.table-striped
+		thead
+			th Title
+			th
+			th Actions
+			th
+		tbody
+			each post, i in posts
+				tr
+					td: a(href="/posts/view/#{post._id}")=post.title
+					td: a.btn.btn-success(href="/posts/view/#{post._id}") View Detail
+					td: a.btn.btn-info(href="/posts/#{post._id}") Edit
+					td: a.btn.btn-danger(href="#", rel=post._id) Delete
+	a.btn.btn-primary(href="/posts/add") Create Post

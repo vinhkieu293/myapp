@@ -1,0 +1,12 @@
+extends layout
+
+block content
+	h4 Create a new post
+	form#formAddPost(name="createpost",method="post",action="/posts/addpost")
+		div.form-group
+			label Title
+			input#titlePost.form-control(type="text", placeholder="Title of Post", name="title")
+		div.form-group
+			label Content
+			textarea#contentPost.form-control(rows="10", name="content")
+		button#btnAddPost.btn.btn-primary(type="submit") Create

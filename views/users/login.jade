@@ -1,0 +1,16 @@
+doctype html
+html
+	head
+		title Login
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+		link(rel='stylesheet', href='/stylesheets/signin.css')
+	body
+		.container
+			form.form-signin
+				h2.form-signin-heading Signin
+				input.form-control#inputUsername(type='text', placeholder='Username')
+				input.form-control#inputPassword(type='password', placeholder='Password')
+				a(href='/signup') Sign Up
+				a.btn.btn-lg.btn-primary.btn-block(href='/') Log In
+
