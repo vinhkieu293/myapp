@@ -1,7 +1,22 @@
-extends layout
+extends ../layout
 
 block content
 	h2= post.title
-	p= post.content
-	b Comment
+	<hr>
+	b Create Date:
+	p= post.create_date
+	b Last Modified:
+	p= post.modified_date
+	b Content:
+	p(style=" text-align: justify")= post.content
+	a.btn.btn-info.btn-md(href='/posts/edit/#{post._id}') Edit
+	&nbsp; 
+	a.btn.btn-danger.btn-md#btnDeletePost(href='/posts/delete/#{post._id}', rel='#{post._id}') Delete
+	br
+	b Author:
+		a(href="/user/#{post.author.user_id}")= post.author.display_name
+	p Tags:
+		each tag, i in post.tags
+			a(href='#')= tag.name
+	p Comment
 	input.form-control(style="text", placeholder="Comment here")

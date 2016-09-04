@@ -1,17 +1,27 @@
-extends layout
+extends ../layout
 
 block content
-	table.table.table-striped
-		thead
-			th Title
-			th
-			th Actions
-			th
-		tbody
-			each post, i in posts
-				tr
-					td: a(href="/posts/view/#{post._id}")=post.title
-					td: a.btn.btn-success(href="/posts/view/#{post._id}") View Detail
-					td: a.btn.btn-info(href="/posts/#{post._id}") Edit
-					td: a.btn.btn-danger(href="#", rel=post._id) Delete
-	a.btn.btn-primary(href="/posts/add") Create Post
+	#postList
+		//- table.table.table-striped
+		//- 	thead
+		//- 		th Title
+		//- 		th
+		//- 		th Actions
+		//- 		th
+		//- 	tbody
+		each post, i in posts
+			h4: a(href='/posts/view/#{post._id}')= post.title
+			p(style='text-align: justify')= post.content
+			hr
+block sidebar
+	if (!user)
+		a.btn.btn-primary.btn-md(href="/login") Login
+		&nbsp;
+		a.btn.btn-success.btn-md(href="/signup") SignUp
+	if (user)
+		p You are currently logged in as <b>#{user.display_name}</b>
+		a.btn.btn-primary.btn-md(href="/changeinfo/#{user._id}") Change Info
+		&nbsp;
+		a.btn.btn-success.btn-md(href="/logout") Logout
+	</br> </br>
+	a.btn.btn-primary(href="/posts/addpost") Create Post

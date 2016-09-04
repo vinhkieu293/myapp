@@ -1,12 +1,20 @@
-extends layout
+extends ../layout
 
 block content
 	h4 Create a new post
-	form#formAddPost(name="createpost",method="post",action="/posts/addpost")
-		div.form-group
-			label Title
-			input#titlePost.form-control(type="text", placeholder="Title of Post", name="title")
-		div.form-group
-			label Content
-			textarea#contentPost.form-control(rows="10", name="content")
-		button#btnAddPost.btn.btn-primary(type="submit") Create
+	#createPost
+		form(name="createpost",method="post", action="/posts/addpost")
+			.form-group
+				label Title
+				input#titlePost.form-control(type="text", placeholder="Title of Post", name="title")
+			.form-group
+				label Content
+				textarea#contentPost.form-control(rows="10", name="content")
+			//- .form-group
+			//- 	input#authorIdPost.form-control(type='hidden', name="author", value='')
+			//- .form-group
+			//- 	input#authorPost.form-control(type='hidden', name="author", value='')
+			.form-group
+				label Tags
+				textarea#tagsPost.form-control(rows="2", name="tags")
+			button#btnAddPost.btn.btn-primary(type="submit") Create

@@ -7,10 +7,11 @@ html
 		link(rel='stylesheet', href='/stylesheets/signin.css')
 	body
 		.container
-			form.form-signin
+			form.form-signin(role="form", method="post", action="/login")
 				h2.form-signin-heading Signin
-				input.form-control#inputUsername(type='text', placeholder='Username')
-				input.form-control#inputPassword(type='password', placeholder='Password')
-				a(href='/signup') Sign Up
-				a.btn.btn-lg.btn-primary.btn-block(href='/') Log In
+				input.form-control#inputUsername(type='text', placeholder='Username', name="username")
+				input.form-control#inputPassword(type='password', placeholder='Password', name="password")
+				button.btn.btn-lg.btn-primary.btn-block(type="submit") Log In
+				</br>
+				a.btn.btn-success.btn-md(href='/signup') Sign Up
 

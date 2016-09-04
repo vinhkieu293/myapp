@@ -1,0 +1,5 @@
+extends ../layout
+
+block content
+	p Hello <b> #{user.display_name} </b>
+	a.btn.btn-info.btn-md(href="/changeinfo/#{user._id}") Change Info

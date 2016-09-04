@@ -14,10 +14,10 @@ html
 						span.icon-bar
 						span.icon-bar
 						span.icon-bar
-					a.navbar-brand(href="/") Trang chủ
+					a.navbar-brand(href="/posts") Trang chủ
 				.collapse.navbar-collapse#collapse-1
 					ul.nav.navbar-nav
-						li: a(href="/userlist") User List
+						li: a(href="/posts/addpost") Add Post
 						li: a(href="/posts") Post List
 						li: a(href="/") Actions 3
 						li.dropdown
@@ -34,26 +34,19 @@ html
 						button.btn.btn-default(type="submit") Search
 					ul.nav.navbar-right.navbar-nav
 						li.dropdown
-							a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false") Profile
+							a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false") UserName
 								b.caret
 							ul.dropdown-menu
-								li: a(href="/login") Logout
-								li: a(href="/") Setting
+								li: a(href="/logout") Logout
+								li: a(href="/changeinfo") Change Info
 		.container
 			.col-md-8
 				block content
 			.col-md-4.sidebar
 				block sidebar
-					h1 Related Post
-					ul
-						li: a(href="/") Other post 1
-						li: a(href="/") Other post 2
-						li: a(href="/") Other post 3
-						li: a(href="/") Other post 4
-						li: a(href="/") Other post 5
 		footer.footer
 			.container
-				p.text-muted Đây là Footer
+				p.text-muted The First App Using Node and Express &copy;2016
 		script(src='/javascripts/jquery.js')
 		script(src='/javascripts/bootstrap.js')
 		script(src='/javascripts/mystyle.js')

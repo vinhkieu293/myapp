@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+	h4 Edit Post
+	form#formAddPost(name="editpost",method="post", action="/posts/edit")
+		div.form-group
+			label Title
+			input#idPost.form-control(type="hidden", name="id", value='#{post._id}')
+			input#titlePost.form-control(type="text", placeholder="Title of Post", name="title", value='#{post.title}') 
+		div.form-group
+			label Content
+			textarea#contentPost.form-control(rows="10", name="content")= post.content
+		div.form-group
+			label Tags
+			textarea#tagsPost.form-control(rows="2", name="tags")
+		button#btnAddPost.btn.btn-primary(type="submit") Save

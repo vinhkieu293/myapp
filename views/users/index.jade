@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+	table.table.table-striped
+		thead
+			th User
+		tbody
+			each user, i in users
+				tr
+					td= user.username
+	a.btn.btn-primary(href="/users/add") Create User 1

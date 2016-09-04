@@ -11,6 +11,7 @@ $(document).ready(function() {
 	$('#btncreatePost').on('click', createPost);
 	// Delete User link click
     $('table tbody').on('click', 'td a.btn.btn-danger', deletePost);
+    $('#btnDeletePost').on('click', deletePost);
 
 });
 
@@ -23,16 +24,21 @@ function populateTable() {
 	var tableContent = '';
 
 	// jQuery AJAX call for JSON
-	$.getJSON('/posts/postlist', function(data) {
+	$.getJSON('/posts/data', function(data) {
 		// Stick our user data array into a userlist variable in the global object
 		myData = data;
 		// For each item in our JSON, add a table row and cells to the content string
 		$.each(data, function(){
-			tableContent += '<a href="/posts/' + this._id + '">' + this.title + '</a></br>';
+			tableContent += '<tr>'
+			tableContent += '<td><a href="/posts/view/' + this._id + '">' + this.title + '</a></td>';
+			tableContent += '<td><a href="/posts/view/' + this._id + '" class="btn btn-info">View</a></td>';
+			tableContent += '<td><a href="/posts/edit/' + this._id + '" class="btn btn-success">Edit</a></td>';
+			tableContent += '<td><a href="/posts/delete/' + this._id + '" class="btn btn-danger" rel="' + this._id + '">Delete</a></td>';
+			tableContent += '</tr>'
 		});
 
 		// Inject the whole content string into our existing HTML table
-		$('#postList').html(tableContent);
+		$('#postList table tbody').html(tableContent);
 	});
 };
 
@@ -74,8 +80,8 @@ function createPost(event) {
 
 		// If it is, compile all user info into one object
 		var newpost = {
-			'title': $('#createPost input#titlePost').val(),
-			'content': $('#createPost textarea#contentPost').val().replace(/\n/g, '<br/>')
+			'title': $('#createPost .form-group input#titlePost').val(),
+			'content': $('#createPost .form-group textarea#contentPost').val().replace(/\n/g, '<br/>')
 		}
 
 		// Use AJAX to post the object to our adduser service
@@ -118,7 +124,7 @@ function deletePost(event) {
     event.preventDefault();
 
     // Pop up a confirmation dialog
-    var confirmation = confirm('Are you sure you want to delete this user?');
+    var confirmation = confirm('Are you sure you want to delete this post?');
 
     // Check and make sure the user confirmed
     if (confirmation === true) {
@@ -126,21 +132,18 @@ function deletePost(event) {
         // If they did, do our delete
         $.ajax({
             type: 'DELETE',
-            url: '/posts/deletepost/' + $(this).attr('rel')
-        }).done(function( response ) {
+            url: '/posts/delete/' + $(this).attr('rel')
+        }).done(function(response) {
 
             // Check for a successful (blank) response
-            if (response.msg === '') {
-
+            if(response.msg === ''){
+            	// Update the table
+            	//window.location.replace("localhost:3000/posts");
+            	populateTable();
+            } else{
+            	alert('Error: ' + response.msg);
             }
-            else {
-                alert('Error: ' + response.msg);
-            }
-
-            // Update the table
-            //populateTable();
-            location.href = "localhost:3000/posts"
-
+            
         });
 
     }
