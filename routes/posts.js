@@ -3,7 +3,7 @@ var router = express.Router();
 
 var mongoose = require('mongoose');
 var Post = require('../models/Post.js');
-var myfunc = require('./myfunc.js');
+var myfunc = require('./mymiddleware.js');
 
 //Authenticated
 var isAuthenticated = function (req, res, next) {
@@ -13,14 +13,7 @@ var isAuthenticated = function (req, res, next) {
         res.redirect('/posts');
     }
 }
-/*router.use(function(req, res, next){
-    if(req.isAuthenticated()){
-        console.log(req.user);
-        return next();
-    } else{
-        res.redirect('/login');
-    }
-})*/
+
 //GET Home page
 router.get('/', function(req, res, next){
     Post.find({}).sort('-create_date').exec(function(err, posts){
@@ -90,8 +83,10 @@ router.get('/view/:id', function(req, res){
     Post.findById(req.params.id, function(err, post){
         res.render('./posts/view', {
             "post": post,
-            title: 'Detail Post'
+            title: 'Detail Post',
+            user: req.user
         });
+        console.log(req.user);
     });
 });
 
@@ -147,6 +142,17 @@ router.delete('/delete/:id', isAuthenticated,function(req, res, next) {
     });
 
     
+});
+
+router.get('/user/:id', function(req, res, next){
+    Post.find({'author.user_id': req.params.id}).sort('-create_date').exec(function(err, posts){
+        if(err) return next(err);
+        res.render('./posts/userpost', {
+            title: 'Post Of User',
+            'posts' : posts,
+            user: req.user
+        });
+    });
 });
 
 module.exports = router;

@@ -10,13 +10,12 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 // Use native Node promises
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://cuongnm_58:manhcuong95@ds029585.mlab.com:29585/mymongodb')
+mongoose.connect('mongodb://localhost/database')
 	.then(() => console.log('Connect success'))
 	.catch((err) => console.error(err));
-/*var db = mongoose.connect('mongodb://cuongnm_58:manhcuong95@ds029585.mlab.com:29585/mymongodb');
-var db = monk('localhost:27017/database');
-var db = monk('cuongnm_58:manhcuong95@ds029585.mlab.com:29585/mymongodb');*/
-// var routes = require('./routes/index');
+/*mongoose.connect('mongodb://cuongnm_58:manhcuong95@ds029585.mlab.com:29585/mymongodb')
+	.then(() => console.log('Connect success'))
+	.catch((err) => console.error(err));*/
 var users = require('./routes/users');
 var posts = require('./routes/posts');
 
@@ -40,6 +39,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 //End new code
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(function(req, res, next){
+	var user = req.user;
+	next();
+});
 app.use('/', users);
 //app.use('/users', users);
 app.use('/posts', posts);

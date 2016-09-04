@@ -14,12 +14,12 @@ html
 						span.icon-bar
 						span.icon-bar
 						span.icon-bar
-					a.navbar-brand(href="/posts") Trang chủ
+					a.navbar-brand(href="/posts") Home
 				.collapse.navbar-collapse#collapse-1
 					ul.nav.navbar-nav
-						li: a(href="/posts/addpost") Add Post
-						li: a(href="/posts") Post List
-						li: a(href="/") Actions 3
+						li: a(href="/posts/addpost") Create Post
+						//- li: a(href="/posts") Post List
+						li: a(href="/") Populate Table
 						li.dropdown
 							a(href="#", data-toggle='dropdown').dropdown-toggle Dropdown
 								b.caret
@@ -31,14 +31,22 @@ html
 					form.navbar-form.navbar-left
 						.form-group
 							input.form-control(type="text", placeholder="Search")
+						&nbsp;
 						button.btn.btn-default(type="submit") Search
 					ul.nav.navbar-right.navbar-nav
 						li.dropdown
-							a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false") UserName
-								b.caret
-							ul.dropdown-menu
-								li: a(href="/logout") Logout
-								li: a(href="/changeinfo") Change Info
+							if (typeof(user) !== 'undefined')
+								a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")= user.display_name
+									b.caret
+								ul.dropdown-menu
+									li: a(href="/logout") Logout
+									li: a(href="/changeinfo/#{user._id}") Change Info
+									li: a(href="/posts/user/#{user._id}") My Post
+							else
+								a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false") Guest
+									b.caret
+								ul.dropdown-menu
+									li: a(href="/login") Login
 		.container
 			.col-md-8
 				block content
