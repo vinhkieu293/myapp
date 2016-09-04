@@ -15,7 +15,7 @@ router.get('/signup', function(req, res) {
 });
 
 router.post('/signup', function(req, res) {
-    User.register(new User({ username : req.body.username }, {display_name : req.body.display_name}), req.body.password, function(err, account) {
+    User.register(new User({ username : req.body.username }), req.body.password, function(err, account) {
         if (err) {
             return res.render('./users/signup', { account: account });
             console.log('Error found');
