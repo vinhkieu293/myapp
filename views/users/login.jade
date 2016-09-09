@@ -7,6 +7,7 @@ html
 		link(rel='stylesheet', href='/stylesheets/signin.css')
 	body
 		.container
+			include ../message.jade
 			form.form-signin(role="form", method="post", action="/login")
 				h2.form-signin-heading Signin
 				input.form-control#inputUsername(type='text', placeholder='Username', name="username")
@@ -14,4 +15,8 @@ html
 				button.btn.btn-lg.btn-primary.btn-block(type="submit") Log In
 				</br>
 				a.btn.btn-success.btn-md(href='/signup') Sign Up
-
+				&nbsp;
+				a(href="/posts") Home
+		script(src='/javascripts/jquery.js')
+		script(src='/javascripts/bootstrap.js')
+		script(src='/javascripts/mystyle.js')

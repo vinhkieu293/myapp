@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+	include ../message.jade
+	#userList
+		table.table.table-striped
+			thead
+				th User
+				th
+				th Actions
+				th
+			tbody
+		a.btn.btn-primary(href="/posts/addpost") Create User
+				
+		//- a.btn.btn-primary(href="/users/add") Create User 1

@@ -18,10 +18,12 @@ var isAuthenticated = function (req, res, next) {
 router.get('/', function(req, res, next){
     Post.find({}).sort('-create_date').exec(function(err, posts){
         if(err) return next(err);
+        //req.session.message.info.push('Add flash message');
         res.render('./posts/index', {
             'posts': posts,
             title: 'Post Home',
-            user: req.user
+            user: req.user,
+            //info: req.flash('info')
         });
     });
 });
@@ -29,7 +31,6 @@ router.get('/', function(req, res, next){
 router.get('/data', function(req, res, next){
     Post.find(function(err, posts){
         if(err) return next(err);
-        // user = req.user;
         res.json(posts);
     })
 })
@@ -55,12 +56,14 @@ router.post('/addpost', isAuthenticated, function(req, res) {
             "display_name": req.user.display_name
         };
         req.body.author = author;
-        console.log(req.body);
+        //console.log(req.body);
         var newPost = new Post(req.body);
         newPost.save(function(err){
             if(err){
-                res.send('Opps! Found Error. Please again!');
+                req.session.message.error.push('Opps! Found Error. Please again!' + err);
+                res.redirect('/posts/addpost');
             } else{
+                req.session.message.info.push('Congratulations! Create post success!');
                 res.redirect('/posts');
             }
             
@@ -81,23 +84,30 @@ router.get('/addpost', isAuthenticated,function(req, res){
 //GET View detail a post
 router.get('/view/:id', function(req, res){
     Post.findById(req.params.id, function(err, post){
-        res.render('./posts/view', {
-            "post": post,
-            title: 'Detail Post',
-            user: req.user
-        });
-        console.log(req.user);
+        if(err){
+            res.send(404, 'Not Found this post! Try again');
+        } else{
+            res.render('./posts/view', {
+                "post": post,
+                title: 'Detail Post',
+                user: req.user
+            });
+            //console.log(req.user);
+        }
     });
 });
 
 /* GET /posts/edit/:id */
 router.get('/edit/:id', function(req, res, next) {
   Post.findById(req.params.id, function (err, post) {
-    if (err) return next(err);
-    res.render('./posts/edit',{
-        'post': post,
-        title: 'Edit post' 
-    });
+    if (err){
+        res.send('Not Found!');
+    } else{
+        res.render('./posts/edit',{
+            'post': post,
+            title: 'Edit post' 
+        });
+    }
   });
 });
 
@@ -112,10 +122,12 @@ router.post('/edit', function(req, res, next) {
         post.modified_date = Date.now();
         post.save(function(err){
             if(err){
-                console.log('Error');
+                req.session.message.error.push('Edit failed. Please try again!' + err);
+                //console.log('Error');
 
             } else{
-                console.log('Success');
+                //console.log('Success');
+                req.session.message.info.push('Edit success!');
                 res.redirect('/posts');
             }
         });
@@ -125,23 +137,11 @@ router.post('/edit', function(req, res, next) {
 /*
  * DELETE to deletePost.
  */
-router.delete('/delete/:id', isAuthenticated,function(req, res, next) {
-    /*Post.findById(req.params.id, function(err, post){
-        if(!post){
-            return next(new Error('Not Found this post! Try again'));
-        } else{
-            if(myfunc.is_author(post.author.user_id, req.user._id)){*/
-                Post.findByIdAndRemove(req.params.id, req.body, function(err, post){
-                    res.send((err === null) ? {msg: ''} : {msg: 'Error' + err})
-                    console.log("Delete success");
-                /*});
-            } else{
-                console.log('Delete faile');
-            }
-        }*/
+router.delete('/delete/:id', isAuthenticated, function(req, res, next) {
+    Post.findByIdAndRemove(req.params.id, req.body, function(err, post){
+        req.session.message.info.push('Delete success!');
+        res.send((err === null) ? {msg: ''} : {msg: 'Error' + err});
     });
-
-    
 });
 
 router.get('/user/:id', function(req, res, next){

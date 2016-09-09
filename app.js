@@ -8,6 +8,7 @@ var fs = require('fs');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var flash = require('connect-flash');
 // Use native Node promises
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/database')
@@ -29,6 +30,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+//app.use(express.session({ cookie: { maxAge: 60000 }}));
+//app.use(flash());
 //Add new code
 app.use(require('express-session')({
 		secret: 'keyboard cat',
@@ -37,10 +40,16 @@ app.use(require('express-session')({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 //End new code
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next){
 	var user = req.user;
+	next();
+});
+app.use(function (req, res, next) {
+	req.session.message = req.session.message || { error: [], success: [], info: [] };
+	app.locals.message  = req.session.message;
 	next();
 });
 app.use('/', users);

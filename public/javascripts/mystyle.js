@@ -1,24 +1,26 @@
 // Userlist data array for filling in info box
-var myData = [];
-
+var myPostData = [];
+var myUserData = [];
 // DOM Ready =============================================================
 $(document).ready(function() {
 	// Username link click
 	$('#postList table tbody').on('click', 'td a.linkshowuser', showUserInfo);
 	// Populate the user table on initial page load
-	populateTable();
+	populateTable_Post();
+	populateTable_User();
 	// Add User button click
 	$('#btncreatePost').on('click', createPost);
 	// Delete User link click
-    $('table tbody').on('click', 'td a.btn.btn-danger', deletePost);
-    $('#btnDeletePost').on('click', deletePost);
+    $('#postList table tbody').on('click', 'td a.btn.btn-danger', deletePost);
+    $('#userList table tbody').on('click', 'td a.btn.btn-danger', deleteUser);
+    
 
 });
 
 // Functions =============================================================
 
 // Fill table with data
-function populateTable() {
+function populateTable_Post() {
 
 	// Empty content string
 	var tableContent = '';
@@ -26,7 +28,7 @@ function populateTable() {
 	// jQuery AJAX call for JSON
 	$.getJSON('/posts/data', function(data) {
 		// Stick our user data array into a userlist variable in the global object
-		myData = data;
+		myPostData = data;
 		// For each item in our JSON, add a table row and cells to the content string
 		$.each(data, function(){
 			tableContent += '<tr>'
@@ -39,6 +41,31 @@ function populateTable() {
 
 		// Inject the whole content string into our existing HTML table
 		$('#postList table tbody').html(tableContent);
+	});
+};
+
+// Fill table with data
+function populateTable_User() {
+
+	// Empty content string
+	var tableContent = '';
+
+	// jQuery AJAX call for JSON
+	$.getJSON('/userlist', function(data) {
+		// Stick our user data array into a userlist variable in the global object
+		myUserData = data;
+		// For each item in our JSON, add a table row and cells to the content string
+		$.each(data, function(){
+			tableContent += '<tr>'
+			tableContent += '<td><a href="/user/' + this._id + '">' + this.username + '</a></td>';
+			tableContent += '<td><a href="/user/' + this._id + '" class="btn btn-info">View</a></td>';
+			tableContent += '<td><a href="/changeinfo/' + this._id + '" class="btn btn-success">Edit</a></td>';
+			tableContent += '<td><a href="/delete/' + this._id + '" class="btn btn-danger" rel="' + this._id + '">Delete</a></td>';
+			tableContent += '</tr>'
+		});
+
+		// Inject the whole content string into our existing HTML table
+		$('#userList table tbody').html(tableContent);
 	});
 };
 
@@ -100,7 +127,7 @@ function createPost(event) {
 				$('#createPost textarea').val('');
 
 				// Update the table
-				populateTable();
+				populateTable_Post();
 
 			}
 			else {
@@ -118,7 +145,7 @@ function createPost(event) {
 	}
 };
 
-// Delete User
+// Delete Post
 function deletePost(event) {
 
     event.preventDefault();
@@ -139,7 +166,45 @@ function deletePost(event) {
             if(response.msg === ''){
             	// Update the table
             	//window.location.replace("localhost:3000/posts");
-            	populateTable();
+            	populateTable_Post();
+            } else{
+            	alert('Error: ' + response.msg);
+            }
+            
+        });
+
+    }
+    else {
+
+        // If they said no to the confirm, do nothing
+        return false;
+
+    }
+
+};
+
+//function DELETE User
+function deleteUser(event) {
+
+    event.preventDefault();
+
+    // Pop up a confirmation dialog
+    var confirmation = confirm('Are you sure you want to delete this user?');
+
+    // Check and make sure the user confirmed
+    if (confirmation === true) {
+
+        // If they did, do our delete
+        $.ajax({
+            type: 'DELETE',
+            url: '/delete/' + $(this).attr('rel')
+        }).done(function(response) {
+
+            // Check for a successful (blank) response
+            if(response.msg === ''){
+            	// Update the table
+            	//window.location.replace("localhost:3000/posts");
+            	populateTable_User();
             } else{
             	alert('Error: ' + response.msg);
             }

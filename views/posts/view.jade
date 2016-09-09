@@ -19,6 +19,7 @@ block content
 	p <b>Tags:</b>
 		each tag, i in post.tags
 			a(href='/tags/#{tag.name}')= tag.name
-			<small> , </small>
+			if (i < post.tags.length - 1)
+				<small> , </small>
 	p Comment
 	input.form-control(style="text", placeholder="Comment here")

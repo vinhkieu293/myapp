@@ -1,22 +1,27 @@
 extends ../layout
 
 block content
-	each post, i in posts
-			h4: a(href='/posts/view/#{post._id}')= post.title
-			p(style='text-align: justify')= post.content
+	if (posts.length)
+		each post, i in posts
+				h4: a(href='/posts/view/#{post._id}')= post.title
+				p(style='text-align: justify')= post.content
 
-			<small class="meta muted"> #{post.create_date.toDateString()} </small>
-			<small class="meta muted"> | Author:  #{post.author.display_name} </small>
-			hr
+				<small class="meta muted"> #{post.create_date.toDateString()} </small>
+				<small class="meta muted"> | Author:  #{post.author.display_name} </small>
+				hr
+	else
+		h4 You don't have any post. Click <a href="/posts/addpost">here </a> to create new post
 block sidebar
 	if (!user)
-		a.btn.btn-primary.btn-md(href="/login") Login
-		&nbsp;
-		a.btn.btn-success.btn-md(href="/signup") SignUp
+		b You aren't login. Please login here
+		a.btn.btn-primary.btn-lg.btn-block(href="/login") Login
+		<center><b>OR</b></center>
+		a.btn.btn-success.btn-lg.btn-block(href="/signup") SignUp
 	if (user)
 		p You are currently logged in as <b>#{user.display_name}</b>
-		a.btn.btn-primary.btn-md(href="/changeinfo/#{user._id}") Change Info
+		a.btn.btn-primary(href="/posts/addpost") Create Post
 		&nbsp;
-		a.btn.btn-success.btn-md(href="/logout") Logout
-	</br> </br>
-	a.btn.btn-primary(href="/posts/addpost") Create Post
+		a.btn.btn-primary.btn-md(href="/changeinfo/#{user._id}") Change Info
+		</br> </br>
+		a.btn.btn-success.btn-lg.btn-block(href="/logout") Logout
+		</br>
