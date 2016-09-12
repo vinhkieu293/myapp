@@ -6,6 +6,7 @@ block content
 		div.form-group
 			label Title
 			input#idPost.form-control(type="hidden", name="id", value='#{post._id}')
+			input#author.form-control(type="hidden", name="author", value="#{user._id}")
 			input#titlePost.form-control(type="text", placeholder="Title of Post", name="title", value='#{post.title}') 
 		div.form-group
 			label Content

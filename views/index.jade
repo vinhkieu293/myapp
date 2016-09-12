@@ -12,9 +12,12 @@ block content
 		a.btn.btn-primary(href="/posts/addpost") Create Post
 block sidebar
 	if (!user)
-		a.btn.btn-primary.btn-md(href="/login") Login
-		&nbsp;
-		a.btn.btn-success.btn-md(href="/signup") SignUp
+		b You aren't login. Please login here
+		a.btn.btn-primary.btn-lg.btn-block(href="/login") Login
+		<center><b>OR</b></center>
+		a.btn.btn-success.btn-lg.btn-block(href="/signup") SignUp
+		br
 	if (user)
-		p You are currently logged in as #{user.username}
-		a.btn.btn-success.btn-md(href="/logout") Logout
+		p You are currently logged in as <b> #{user.display_name} </b>
+		a.btn.btn-success.btn-lg.btn-block(href="/logout") Logout
+		br

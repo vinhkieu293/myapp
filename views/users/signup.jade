@@ -7,6 +7,8 @@ html
 		link(rel='stylesheet', href='/stylesheets/signin.css')
 	body
 		.container
+			.form-signin
+				include ../message.jade
 			form.form-signin(role='form', method="post", action="/signup")
 				h2.form-signin-heading Signup
 				input.form-control#inputUsername(type='text', placeholder='Email', name="username")
@@ -18,3 +20,6 @@ html
 				a.btn.btn-success.btn-md(href='/login') Login
 				&nbsp;
 				a(href="/posts") Home
+		script(src='/javascripts/jquery.js')
+		script(src='/javascripts/bootstrap.js')
+		script(src='/javascripts/mystyle.js')

@@ -2,13 +2,20 @@ extends ../layout
 
 block content
 	if (posts.length)
-		each post, i in posts
-				h4: a(href='/posts/view/#{post._id}')= post.title
-				p(style='text-align: justify')= post.content
-
-				<small class="meta muted"> #{post.create_date.toDateString()} </small>
-				<small class="meta muted"> | Author:  #{post.author.display_name} </small>
-				hr
+		table.table.table-striped
+			thead
+				tr
+					th My Post
+					th
+					th Actions
+					th
+			tbody
+				each post, i in posts
+						tr
+							td: a(href='/posts/view/#{post._id}')= post.title
+							td: a.btn.btn-info.btn-md(href="/posts/view/#{post._id}") View
+							td: a.btn.btn-success.btn-md(href="/posts/edit/#{post._id}") Edit
+							td: a.btn.btn-danger.btn-md(href="/posts/delete/#{post._id}") Delete
 	else
 		h4 You don't have any post. Click <a href="/posts/addpost">here </a> to create new post
 block sidebar

@@ -7,7 +7,8 @@ html
 		link(rel='stylesheet', href='/stylesheets/signin.css')
 	body
 		.container
-			include ../message.jade
+			.form-signin
+				include ../message.jade
 			form.form-signin(role="form", method="post", action="/login")
 				h2.form-signin-heading Signin
 				input.form-control#inputUsername(type='text', placeholder='Username', name="username")

@@ -1,6 +1,6 @@
 - var i
 - if (message.error && message.error.length)
-  .alert.alert-warning.alert-dismissable
+  .alert.alert-danger.alert-dismissable
     button.close(type="button", data-dismiss="alert", aria-hidden="true") &times;
     - for (i = 0; i < message.error.length; i++)
       .center!= message.error[i]

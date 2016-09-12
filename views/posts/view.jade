@@ -9,13 +9,12 @@ block content
 	p= post.modified_date.toDateString()
 	b Content:
 	p(style=" text-align: justify")= post.content
-	if (typeof(user) != 'undefined' && user._id == post.author.user_id)
+	if (typeof(user) != 'undefined' && post.author._id.equals(user._id))
 		a.btn.btn-info.btn-md(href='/posts/edit/#{post._id}') Edit
-		&nbsp;
-		a.btn.btn-danger.btn-md#btnDeletePost(href='/posts/delete/#{post._id}', rel='#{post._id}') Delete
+		
 	br
 	b Author: 
-	a(href="/user/#{post.author.user_id}")= post.author.display_name
+	a(href="/user/#{post.author._id}")= post.author.display_name
 	p <b>Tags:</b>
 		each tag, i in post.tags
 			a(href='/tags/#{tag.name}')= tag.name

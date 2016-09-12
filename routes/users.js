@@ -11,14 +11,14 @@ router.get('/', function (req, res) {
 });
 
 router.get('/signup', function(req, res) {
-		res.render('./users/signup', {title: 'Register'});
+		res.render('./users/signup', {title: 'SignUp'});
 });
 
 router.post('/signup', function(req, res) {
 		User.register(new User({ username : req.body.username }), req.body.password, function(err, account) {
 				if (err) {
-						return res.render('./users/signup', { account: account });
-						console.log('Error found');
+					req.session.message.error.push('' + err);
+					return res.render('./users/signup', { account: account });	
 				}
 
 				passport.authenticate('local')(req, res, function() {
@@ -32,8 +32,8 @@ router.get('/login', function(req, res, next) {
 		res.render('./users/login', { user : req.user });
 });
 
-router.post('/login', passport.authenticate('local', {successRedirect: '/posts', failureRedirect: '/login'}), function(req, res) {
-		//res.redirect('/posts');
+router.post('/login', passport.authenticate('local', {successRedirect: '/posts', failureFlash: 'Invalid username or password.'}), function(req, res) {
+
 });
 
 router.get('/logout', function(req, res) {
@@ -41,24 +41,6 @@ router.get('/logout', function(req, res) {
 		res.redirect('/posts');
 });
 
-
-
-
-
-
-
-router.get('/add', function(req, res, next){
-	res.render('./users/add', {
-		title: 'Add User'
-	});
-})
-/* POST /users/ */
-router.post('/add', function(req, res, next){
-	User.create(req.body, function (err, post){
-		if(err) return next(err);
-		res.json(post);
-	});
-});
 /* GET /users/:id */
 router.get('/user/:id', function(req, res, next) {
 	User.findById(req.params.id, function (err, user) {

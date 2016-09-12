@@ -164,8 +164,6 @@ function deletePost(event) {
 
             // Check for a successful (blank) response
             if(response.msg === ''){
-            	// Update the table
-            	//window.location.replace("localhost:3000/posts");
             	populateTable_Post();
             } else{
             	alert('Error: ' + response.msg);
